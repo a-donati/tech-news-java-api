@@ -1,20 +1,19 @@
 package com.technews.controller;
 
+import com.technews.model.Comment;
 import com.technews.model.Post;
 import com.technews.model.User;
-import com.technews.model.Comment;
-
 import com.technews.repository.CommentRepository;
 import com.technews.repository.PostRepository;
 import com.technews.repository.UserRepository;
 import com.technews.repository.VoteRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -23,7 +22,7 @@ import java.util.List;
 public class HomePageController {
 //    set up relationships for repositories
     @Autowired
-    UserRepository userRepository;
+UserRepository userRepository;
 
     @Autowired
     PostRepository postRepository;
