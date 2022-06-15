@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-//entry and exit points
+//use controller to establish entry and exit points
 @Controller
 public class HomePageController {
 //    set up relationships for repositories
@@ -34,18 +34,22 @@ public class HomePageController {
     @Autowired
     CommentRepository commentRepository;
 
+//    login template is rendered when /login route is hit
     @GetMapping("/login")
+//    remap Model to model variable
     public String login(Model model, HttpServletRequest request) {
 
         if (request.getSession(false) != null) {
             return "redirect:/";
         }
-
+// addAttribute method which is built into the model object, sends the info to the Thymeleaf templates
         model.addAttribute("user", new User());
+//        newly created user is sent to the template as a string to be displayed within the template
         return "login";
     }
 
     @GetMapping("/users/logout")
+//    when logout route is hit, session is invalidated - user is redirected
     public String logout(HttpServletRequest request) {
         if (request.getSession(false) != null) {
             request.getSession().invalidate();
@@ -64,14 +68,14 @@ public class HomePageController {
             model.addAttribute("loggedIn", false);
         }
 
-
+//retrieve post data
         List<Post> postList = postRepository.findAll();
         for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
             User user = userRepository.getById(p.getUserId());
             p.setUserName(user.getUsername());
         }
-
+// add details to the user model and populate on homepage
         model.addAttribute("postList", postList);
         model.addAttribute("loggedIn", sessionUser.isLoggedIn());
 
@@ -131,8 +135,10 @@ public class HomePageController {
         }
     }
     public Model setupDashboardPage(Model model, HttpServletRequest request) throws Exception {
+//        assign current user session as sessionUser
         User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
         Integer userId = sessionUser.getId();
+//        find all posts by users id - for loop gathers all posts
         List<Post> postList = postRepository.findAllPostsByUserId(userId);
         for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
